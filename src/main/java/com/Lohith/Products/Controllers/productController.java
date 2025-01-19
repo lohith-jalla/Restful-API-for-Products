@@ -8,20 +8,28 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Rest Controller class
+// default Endpoint for this controller
+// to be executed and to execute the CRUD
+// operations on the product class is "/api/products/".
 @RestController()
 @RequestMapping("/api/products/")
 public class productController {
 
+    // Objects for the Service class and the Product Repository
     private final ProductService productService;
     private final ProductRepo productRepo;
     private product p;
 
+    // constructor to instantiate the service class,
+    // product repository and product class objects
     public productController(ProductService productService, ProductRepo productRepo, product p) {
         this.productService = productService;
         this.productRepo = productRepo;
         this.p = p;
     }
 
+    // Just a default endpoint for checking the api working.
     @GetMapping("/home")
     public String home(){
         return "home";
@@ -29,6 +37,7 @@ public class productController {
 
 
     // Create a product
+    // http://localhost:8080/api/products/AddProduct -> URL for PostMan to Test the endPoint.
     @PostMapping("/AddProduct")
     public String AddProduct(@RequestParam String name,@RequestParam Double price,@RequestParam int quantity){
         p.setName(name);
@@ -39,12 +48,16 @@ public class productController {
     }
 
     // List of products
+    //http://localhost:8080/api/products/ProductsList -> URL For PostMan to Test the EndPoint
     @GetMapping("/ProductsList")
     public List<product> ProductsList(){
         return productService.getAllProducts();
     }
 
     // Delete a product
+    // http://localhost:8080/api/products/DeleteProduct/{id} -> URL for PostMan to Test the EndPoint
+    // In the place of id just keep the id of the product you need to delete
+
     @DeleteMapping("/DeleteProduct/{id}")
     public String DeleteProduct(@PathVariable int id){
         try{
@@ -55,6 +68,11 @@ public class productController {
         }
 
     }
+    // Update a product
+    //http://localhost:8080/api/products/UpdateProduct/{id} -> URL for Postman to test the Endpoint
+    //In the place of id just keep the id of the product you need to update
+    //The variables you need to change can be passed using params but if not it will take the default values
+    // which are present in the original product -> it will not change anything.
 
     @PatchMapping("/UpdateProduct/{id}")
     public String UpdateProduct(
